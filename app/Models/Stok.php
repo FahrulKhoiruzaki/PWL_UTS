@@ -3,12 +3,16 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Stok extends Model
 {
     protected $table = 'stoks';
-    protected $primaryKey = 'Stok_id';
+
+    protected $primaryKey = 'stok_id';
+
+    public $incrementing = true;
+
+    protected $keyType = 'int';
 
     protected $fillable = [
         'supplier_id',
@@ -18,20 +22,18 @@ class Stok extends Model
         'stok_jumlah',
     ];
 
-    protected $casts = [
-        'stok_tanggal' => 'datetime',
-        'stok_jumlah' => 'integer',
-    ];
-
-    public function supplier(): BelongsTo{
+    public function supplier()
+    {
         return $this->belongsTo(Supplier::class, 'supplier_id', 'supplier_id');
     }
 
-    public function barang(): BelongsTo{
+    public function barang()
+    {
         return $this->belongsTo(Barang::class, 'barang_id', 'barang_id');
     }
 
-    public function user(): BelongsTo{
+    public function user()
+    {
         return $this->belongsTo(User::class, 'user_id', 'user_id');
     }
 }
