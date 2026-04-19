@@ -2,11 +2,12 @@
 
 namespace App\Filament\Resources\Penjualans\Schemas;
 
-use Filament\Schemas\Schema;
-use App\Models\User;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Filament\Schemas\Components\Grid;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Schema;
 
 class PenjualanForm
 {
@@ -14,27 +15,42 @@ class PenjualanForm
     {
         return $schema
             ->components([
-                Select::make('user_id')
-                    ->label('User')
-                    ->options(User::pluck('nama', 'user_id'))
-                    ->searchable()
-                    ->preload()
-                    ->required(),
+                Grid::make(2)
+                    ->schema([
+                        Section::make('Header Transaksi')
+                            ->description('Bagian utama transaksi kasir.')
+                            ->icon('heroicon-o-shopping-cart')
+                            ->schema([
+                                TextInput::make('penjualan_kode')
+                                    ->label('Kode Penjualan')
+                                    ->required()
+                                    ->maxLength(20)
+                                    ->unique(ignoreRecord: true),
 
-                TextInput::make('pembeli')
-                    ->label('Nama Pembeli')
-                    ->required()
-                    ->maxLength(50),
+                                DateTimePicker::make('penjualan_tanggal')
+                                    ->label('Tanggal Penjualan')
+                                    ->required(),
 
-                TextInput::make('penjualan_kode')
-                    ->label('Kode Penjualan')
-                    ->required()
-                    ->maxLength(20)
-                    ->unique(ignoreRecord: true),
+                                Select::make('user_id')
+                                    ->label('Kasir')
+                                    ->relationship('user', 'nama')
+                                    ->required()
+                                    ->preload(),
+                            ])
+                            ->columns(1),
 
-                DateTimePicker::make('penjualan_tanggal')
-                    ->label('Tanggal Penjualan')
-                    ->required(),
+                        Section::make('Data Pembeli')
+                            ->description('Identitas pembeli dibuat terpisah agar header transaksi tetap enak dibaca.')
+                            ->icon('heroicon-o-user-circle')
+                            ->schema([
+                                TextInput::make('pembeli')
+                                    ->label('Nama Pembeli')
+                                    ->required()
+                                    ->maxLength(100),
+                            ])
+                            ->columns(1),
+                    ])
+                    ->columnSpanFull(),
             ]);
     }
 }

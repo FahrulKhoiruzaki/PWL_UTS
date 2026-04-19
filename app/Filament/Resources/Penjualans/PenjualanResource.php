@@ -13,16 +13,19 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use UnitEnum;
 
 class PenjualanResource extends Resource
 {
     protected static ?string $model = Penjualan::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-shopping-cart';
+    protected static string|UnitEnum|null $navigationGroup = 'Transaksi';
+    protected static ?int $navigationSort = 7;
 
-    protected static ?string $navigationLabel = 'Transaksi Penjualan';
+    protected static ?string $navigationLabel = 'Penjualan';
     protected static ?string $modelLabel = 'Penjualan';
-    protected static ?string $pluralModelLabel = 'Transaksi Penjualan';
+    protected static ?string $pluralModelLabel = 'Penjualan';
 
 
     public static function form(Schema $schema): Schema

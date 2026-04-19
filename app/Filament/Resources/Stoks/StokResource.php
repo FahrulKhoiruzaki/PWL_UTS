@@ -13,16 +13,19 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use UnitEnum;
 
 class StokResource extends Resource
 {
     protected static ?string $model = Stok::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-inbox-arrow-down';
+    protected static string|UnitEnum|null $navigationGroup = 'Transaksi';
+    protected static ?int $navigationSort = 6;
 
-    protected static ?string $navigationLabel = 'Transaksi Stok';
+    protected static ?string $navigationLabel = 'Stok Masuk';
     protected static ?string $modelLabel = 'Stok';
-    protected static ?string $pluralModelLabel = 'Transaksi Stok';
+    protected static ?string $pluralModelLabel = 'Stok Masuk';
 
     public static function form(Schema $schema): Schema
     {

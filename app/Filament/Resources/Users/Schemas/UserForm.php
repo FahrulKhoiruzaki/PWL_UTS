@@ -3,7 +3,8 @@
 namespace App\Filament\Resources\Users\Schemas;
 
 use Filament\Schemas\Schema;
-use App\Models\Level;
+use Filament\Schemas\Components\Grid;
+use Filament\Schemas\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 
@@ -13,37 +14,44 @@ class UserForm
     {
         return $schema
             ->components([
-                Select::make('level_id')
-                    ->label('Level')
-                    ->options(Level::pluck('level_nama', 'level_id'))
-                    ->searchable()
-                    ->preload()
-                    ->required(),
+                Grid::make(2)
+                    ->schema([
+                        Section::make('Profil Pengguna')
+                            ->description('Data identitas akun pengguna aplikasi.')
+                            ->icon('heroicon-o-user')
+                            ->schema([
+                                TextInput::make('nama')
+                                    ->label('Nama Lengkap')
+                                    ->required()
+                                    ->maxLength(100),
 
-                TextInput::make('username')
-                    ->label('Username')
-                    ->required()
-                    ->maxLength(20)
-                    ->unique(ignoreRecord: true),
-                
-                TextInput::make('nama')
-                    ->label('Nama')
-                    ->required()
-                    ->maxLength(100),
+                                TextInput::make('username')
+                                    ->label('Username')
+                                    ->required()
+                                    ->maxLength(50)
+                                    ->unique(ignoreRecord: true),
+                            ])
+                            ->columns(1),
 
-                TextInput::make('email')
-                    ->label('Email')
-                    ->email()
-                    ->required()
-                    ->unique(ignoreRecord: true),
+                        Section::make('Akses & Keamanan')
+                            ->description('Atur level akses dan kredensial login pengguna.')
+                            ->icon('heroicon-o-key')
+                            ->schema([
+                                Select::make('level_id')
+                                    ->label('Level')
+                                    ->relationship('level', 'level_nama')
+                                    ->required()
+                                    ->preload(),
 
-                TextInput::make('password')
-                    ->label('Password')
-                    ->password()
-                    ->revealable()
-                    ->required(fn (string $operation): bool => $operation === 'create')
-                    ->dehydrated(fn ($state) => filled($state))
-                    ->maxLength(255),
+                                TextInput::make('password')
+                                    ->label('Password')
+                                    ->password()
+                                    ->required()
+                                    ->maxLength(255),
+                            ])
+                            ->columns(1),
+                    ])
+                    ->columnSpanFull(),
             ]);
     }
 }
