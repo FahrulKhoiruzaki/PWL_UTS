@@ -3,7 +3,7 @@
 namespace App\Filament\Resources\Levels\Pages;
 
 use App\Filament\Resources\Levels\LevelResource;
-use Filament\Actions\DeleteAction;
+use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 
 class EditLevel extends EditRecord
@@ -13,7 +13,12 @@ class EditLevel extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            DeleteAction::make(),
+            Actions\DeleteAction::make(),
         ];
+    }
+
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
     }
 }

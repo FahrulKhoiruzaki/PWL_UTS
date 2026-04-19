@@ -3,7 +3,7 @@
 namespace App\Filament\Resources\Barangs\Pages;
 
 use App\Filament\Resources\Barangs\BarangResource;
-use Filament\Actions\DeleteAction;
+use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 
 class EditBarang extends EditRecord
@@ -13,7 +13,12 @@ class EditBarang extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            DeleteAction::make(),
+            Actions\DeleteAction::make(),
         ];
+    }
+
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
     }
 }
